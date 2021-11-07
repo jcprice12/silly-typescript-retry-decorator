@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/jcprice12/silly-typescript-retry-decorator/issues"
   },
-  "homepage": "https://github.com/jcprice12/silly-typescript-retry-decorator#readme"
+  "homepage": "https://github.com/jcprice12/silly-typescript-retry-decorator#readme",
+  "devDependencies": {
+    "typescript": "^4.4.4"
+  }
 }
