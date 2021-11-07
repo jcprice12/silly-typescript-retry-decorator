@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {
-    "**/*.{ts,js}": [
+    "src/**/*.{ts,js}": [
       "eslint . --ext .js,.ts --fix",
       "prettier --write"
     ]
