@@ -1,4 +1,2 @@
-export const foo = 'bar'
-export function dude (hey) {
-
-}
+export const foo = 'bar';
+export function dude(hey) {}
