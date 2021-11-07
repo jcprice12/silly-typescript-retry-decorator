@@ -4,7 +4,14 @@
   "description": "a typescript decorator for retrying methods on classes",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint . --ext .js,.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "lint-staged": {
+    "**/*.{ts,js}": [
+      "eslint . --ext .js,.ts --fix",
+      "prettier --write"
+    ]
   },
   "repository": {
     "type": "git",
@@ -22,6 +29,16 @@
   },
   "homepage": "https://github.com/jcprice12/silly-typescript-retry-decorator#readme",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.1",
+    "husky": "^7.0.4",
+    "prettier": "^2.4.1",
     "typescript": "^4.4.4"
   }
 }
