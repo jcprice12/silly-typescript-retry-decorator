@@ -1,2 +1,3 @@
-export const foo = 'bar';
-export function dude(hey) {}
+export function hello(world: string) {
+  console.log(world);
+}
