@@ -1,0 +1,24 @@
+{
+  "name": "silly-typescript-retry-decorator",
+  "version": "1.0.0",
+  "description": "a typescript decorator for retrying methods on classes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcprice12/silly-typescript-retry-decorator.git"
+  },
+  "keywords": [
+    "typescript",
+    "retry",
+    "decorator"
+  ],
+  "author": "jcprice12",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jcprice12/silly-typescript-retry-decorator/issues"
+  },
+  "homepage": "https://github.com/jcprice12/silly-typescript-retry-decorator#readme"
+}
