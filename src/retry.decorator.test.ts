@@ -61,7 +61,7 @@ describe('Retry Decorator', () => {
         });
 
         test('Then the original method is only called once with the original arguments', () => {
-          assertMethodCalledCorrectly(1, arbitraryArg)
+          assertMethodCalledCorrectly(1, arbitraryArg);
         });
       });
     });
@@ -89,7 +89,7 @@ describe('Retry Decorator', () => {
         });
 
         test('Then the original method is retried the default number of times', () => {
-          assertMethodCalledCorrectly(3, arbitraryArg)
+          assertMethodCalledCorrectly(3, arbitraryArg);
         });
       });
     });
@@ -114,7 +114,7 @@ describe('Retry Decorator', () => {
         });
 
         test('Then the original method is called the correct number of times', () => {
-          assertMethodCalledCorrectly(2, arbitraryArg)
+          assertMethodCalledCorrectly(2, arbitraryArg);
         });
       });
     });
