@@ -2,12 +2,14 @@
   "name": "silly-typescript-retry-decorator",
   "version": "1.0.0",
   "description": "a typescript decorator for retrying methods on classes",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts --fix",
+    "build": "tsc --p tsconfig.build.json",
     "format": "prettier --write \"**/*.{ts,js,json}\"",
-    "test": "jest",
-    "prepare": "husky install"
+    "lint": "eslint . --ext .js,.ts --fix",
+    "prepare": "husky install",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
