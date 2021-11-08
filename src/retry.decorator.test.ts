@@ -1,4 +1,4 @@
-import { Retry } from '.';
+import { Retry } from './retry.decorator';
 
 describe('Retry Decorator', () => {
   interface ArbitraryArg {
@@ -20,11 +20,11 @@ describe('Retry Decorator', () => {
     };
   });
 
-  describe('Given a class with a method to retry that is not asynchronous', () => {
-    let testMock: jest.Mock<ArbitraryResult>;
+  describe('Given a class with a method to retry', () => {
+    let testMock: jest.Mock<Promise<ArbitraryResult>>;
     class TestClass {
       @Retry()
-      test(arg1: ArbitraryArg): ArbitraryResult {
+      test(arg1: ArbitraryArg): Promise<ArbitraryResult> {
         return testMock(arg1);
       }
     }
@@ -47,13 +47,13 @@ describe('Retry Decorator', () => {
 
     describe('Given decorated method will not fail', () => {
       beforeEach(() => {
-        testMock.mockReturnValue(arbitraryResult);
+        testMock.mockResolvedValue(arbitraryResult);
       });
 
       describe('When method is invoked with arbitrary arguments', () => {
         let result: ArbitraryResult;
-        beforeEach(() => {
-          result = testable.test(arbitraryArg);
+        beforeEach(async () => {
+          result = await testable.test(arbitraryArg);
         });
 
         test('Then result is successfully returned', () => {
@@ -68,16 +68,14 @@ describe('Retry Decorator', () => {
 
     describe('Given decorated method will always fail', () => {
       beforeEach(() => {
-        testMock.mockImplementation(() => {
-          throw arbitraryError;
-        });
+        testMock.mockRejectedValue(arbitraryError);
       });
 
       describe('When method is invoked with arbitrary arguments', () => {
         let thrownError: unknown;
-        beforeEach(() => {
+        beforeEach(async () => {
           try {
-            testable.test(arbitraryArg);
+            await testable.test(arbitraryArg);
             fail('an error should have been thrown but was not');
           } catch (e) {
             thrownError = e;
@@ -97,16 +95,14 @@ describe('Retry Decorator', () => {
     describe('Given decorated method will eventually succeed', () => {
       beforeEach(() => {
         testMock
-          .mockImplementationOnce(() => {
-            throw arbitraryError;
-          })
-          .mockReturnValue(arbitraryResult);
+          .mockRejectedValueOnce(arbitraryError)
+          .mockResolvedValue(arbitraryResult);
       });
 
       describe('When method is invoked with arbitrary arguments', () => {
         let result: ArbitraryResult;
-        beforeEach(() => {
-          result = testable.test(arbitraryArg);
+        beforeEach(async () => {
+          result = await testable.test(arbitraryArg);
         });
 
         test('Then result is successfully returned', () => {

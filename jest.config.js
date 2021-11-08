@@ -18,5 +18,6 @@ module.exports = {
       statements: 100
     }
   },
+  coveragePathIgnorePatterns: ['<rootDir>/*.index.ts'],
   collectCoverageFrom: ['**/*.ts']
 };

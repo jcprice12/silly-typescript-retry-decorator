@@ -14,12 +14,15 @@ export function Retry(
   ) {
     descriptor.value = new Proxy(descriptor.value, {
       apply: function (original, thisArg: any, args: any[]) {
-        function retryable(attemptsLeft: number, lastError: unknown): unknown {
+        async function retryable(
+          attemptsLeft: number,
+          lastError: unknown
+        ): Promise<unknown> {
           if (attemptsLeft <= 0) {
             throw lastError;
           }
           try {
-            return original.apply(thisArg, args);
+            return await original.apply(thisArg, args);
           } catch (e) {
             return retryable(attemptsLeft - 1, e);
           }
