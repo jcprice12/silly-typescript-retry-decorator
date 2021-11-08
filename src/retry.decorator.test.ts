@@ -77,7 +77,7 @@ describe('Retry Decorator', () => {
         let totalTime: number;
         beforeEach(async () => {
           try {
-            startTime = Date.now()
+            startTime = Date.now();
             await testable.test(arbitraryArg);
             fail('an error should have been thrown but was not');
           } catch (e) {
