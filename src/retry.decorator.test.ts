@@ -1,4 +1,5 @@
 import { BackoffStrategy } from './backoff.strategy';
+import { RetryCondition } from './retry.condition';
 import { Retry } from './retry.decorator';
 
 describe('Retry Decorator', () => {
@@ -212,6 +213,81 @@ describe('Retry Decorator', () => {
 
         test('Then there is a delay between each method call as specified by the backoff policy', () => {
           expect(totalTime).toBeGreaterThanOrEqual(smallAmountOfTime * 2);
+        });
+      });
+    });
+  });
+
+  describe('Given a class with a method to retry with a specified retry condition', () => {
+    class TestRetryCondition implements RetryCondition<Error> {
+      shouldRetry(e: Error): boolean {
+        return e === arbitraryError;
+      }
+    }
+    class TestClass {
+      @Retry({ retryCondition: new TestRetryCondition() })
+      test(arg1: ArbitraryArg): Promise<ArbitraryResult> {
+        return testMock(arg1);
+      }
+    }
+
+    let testable: TestClass;
+    beforeEach(() => {
+      testable = new TestClass();
+    });
+
+    describe('Given decorated method will always fail with error that passes retry condition', () => {
+      beforeEach(() => {
+        testMock.mockRejectedValue(arbitraryError);
+      });
+
+      describe('When method is invoked with arbitrary arguments', () => {
+        let thrownError: unknown;
+        beforeEach(async () => {
+          try {
+            await testable.test(arbitraryArg);
+            fail('an error should have been thrown but was not');
+          } catch (e) {
+            thrownError = e;
+          }
+        });
+
+        test('Then last error thrown by original method is thrown', () => {
+          expect(thrownError).toBe(arbitraryError);
+        });
+
+        test('Then the original method is retried the correct number of times', () => {
+          assertMethodCalledCorrectly(3, arbitraryArg);
+        });
+      });
+    });
+
+    describe('Given decorated method will fail with error that passes retry condition but then fails with error that does not pass retry condition', () => {
+      let errorThatDoesNotPassCondition: Error;
+      beforeEach(() => {
+        errorThatDoesNotPassCondition = new Error('ouch');
+        testMock
+          .mockRejectedValueOnce(arbitraryError)
+          .mockRejectedValue(errorThatDoesNotPassCondition);
+      });
+
+      describe('When method is invoked with arbitrary arguments', () => {
+        let thrownError: unknown;
+        beforeEach(async () => {
+          try {
+            await testable.test(arbitraryArg);
+            fail('an error should have been thrown but was not');
+          } catch (e) {
+            thrownError = e;
+          }
+        });
+
+        test('Then last error thrown by original method is thrown', () => {
+          expect(thrownError).toBe(errorThatDoesNotPassCondition);
+        });
+
+        test('Then the original method is retried the correct number of times', () => {
+          assertMethodCalledCorrectly(2, arbitraryArg);
         });
       });
     });
