@@ -7,3 +7,17 @@ export class AlwaysRetry implements RetryCondition<unknown> {
     return true;
   }
 }
+
+export class RetryOnGivenErrorClasses<E extends Error>
+  implements RetryCondition<E>
+{
+  constructor(
+    private readonly errorsToRetryOn: Array<{
+      new (...args: Array<any>): E;
+    }>
+  ) {}
+
+  shouldRetry(error: E) {
+    return this.errorsToRetryOn.some((e) => error instanceof e);
+  }
+}
